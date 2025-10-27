@@ -12,7 +12,7 @@
   * This software component is licensed by ST under BSD 3-Clause license,
   * the "License"; You may not use this file except in compliance with the
   * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * opensource.org/licenses/BSD-3-Clause
   *
   ******************************************************************************
   */
@@ -93,19 +93,28 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim2);
 
   SCH_Init();
-  SCH_Add_Task(turnREDLED, 10, 500, -1);
-  SCH_Add_Task(turnGREENLED, 10, 200, -1);
-  SCH_Add_Task(turnYELLOWLED, 10, 300, -1);
 
-  SCH_Add_Task(turnRED, 10, 600, -1);
-  SCH_Add_Task(turnGreen, 10, 700, -1);
+  // Yêu cầu 5 tasks: 0.5s, 1s, 1.5s, 2s, 2.5s
+  // Timer tick của bạn là 10ms (từ MX_TIM2_Init, Prescaler 7999, Period 9)
+  // 0.5s = 500ms  = 50 ticks
+  // 1.0s = 1000ms = 100 ticks
+  // 1.5s = 1500ms = 150 ticks
+  // 2.0s = 2000ms = 200 ticks
+  // 2.5s = 2500ms = 250 ticks
+
+  SCH_Add_Task(turnREDLED, 10, 50, -1);     // Chạy mỗi 0.5s
+  SCH_Add_Task(turnGREENLED, 10, 100, -1);  // Chạy mỗi 1.0s
+  SCH_Add_Task(turnYELLOWLED, 10, 150, -1); // Chạy mỗi 1.5s
+  SCH_Add_Task(turnRED, 10, 200, -1);       // Chạy mỗi 2.0s
+  SCH_Add_Task(turnGreen, 10, 250, -1);     // Chạy mỗi 2.5s
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  SCH_Dispatch_Tasks();
+      SCH_Dispatch_Tasks(); // Yêu cầu của đề bài [cite: 679]
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -209,13 +218,13 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, LED_RED_Pin|LED_YELLOW_Pin|LED_GREEN_Pin|LED_REDA4_Pin
                           |LED_GREENA5_Pin|dig1_Pin|dig2_Pin|dig3_Pin
-                          |dig4_Pin, GPIO_PIN_RESET);
+                          |dig4_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, a_Pin|b_Pin|c_Pin|red1_Pin
                           |red2_Pin|yellow1_Pin|yellow2_Pin|green1_Pin
                           |green2_Pin|d_Pin|e_Pin|f_Pin
-                          |g_Pin, GPIO_PIN_RESET);
+                          |g_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pins : LED_RED_Pin LED_YELLOW_Pin LED_GREEN_Pin LED_REDA4_Pin
                            LED_GREENA5_Pin dig1_Pin dig2_Pin dig3_Pin
@@ -246,7 +255,9 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-  SCH_Update();
+  if (htim->Instance == TIM2) {
+      SCH_Update(); // Yêu cầu của đề bài [cite: 678]
+  }
 }
 /* USER CODE END 4 */
 
@@ -268,7 +279,7 @@ void Error_Handler(void)
 #ifdef  USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
+  * where the assert_param error has occurred.
   * @param  file: pointer to the source file name
   * @param  line: assert_param error line source number
   * @retval None

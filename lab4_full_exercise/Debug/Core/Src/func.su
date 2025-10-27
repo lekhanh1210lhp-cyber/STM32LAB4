@@ -1,5 +1,5 @@
-func.c:4:6:turnREDLED	8	static
-func.c:9:6:turnYELLOWLED	8	static
-func.c:14:6:turnGREENLED	8	static
-func.c:19:6:turnRED	8	static
-func.c:25:6:turnGreen	8	static
+func.c:9:6:turnREDLED	8	static
+func.c:15:6:turnGREENLED	8	static
+func.c:21:6:turnYELLOWLED	8	static
+func.c:27:6:turnRED	8	static
+func.c:33:6:turnGreen	8	static

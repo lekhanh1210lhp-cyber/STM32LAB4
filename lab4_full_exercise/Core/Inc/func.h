@@ -3,7 +3,11 @@
 
 #include "main.h"
 
-// Chỉ khai báo hàm (prototypes)
+//
+// KHAI BÁO (PROTOTYPES)
+// Phần định nghĩa (code) đã được chuyển sang func.c
+//
+
 void turnREDLED(void);
 void turnYELLOWLED(void);
 void turnGREENLED(void);
